@@ -30,12 +30,12 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            keyAlias = keyProperties["keyAlias"] as String?
-            keyPassword = keyProperties["keyPassword"] as String?
-            storeFile = keyProperties["storeFile"]?.let { file(it as String) }
-            storePassword = keyProperties["storePassword"] as String?
-        }
+        // create("release") {
+        //     keyAlias = keyProperties["keyAlias"] as String?
+        //     keyPassword = keyProperties["keyPassword"] as String?
+        //     storeFile = keyProperties["storeFile"]?.let { file(it as String) }
+        //     storePassword = keyProperties["storePassword"] as String?
+        // }
     }
 
     defaultConfig {
@@ -48,12 +48,8 @@ android {
 
     buildTypes {
         release {
-            // Use release signing if available, otherwise fall back to debug
-            signingConfig = if (signingConfigs.findByName("release") != null) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
-            }
+            // No signingConfig here so Gradle will produce an unsigned release APK.
+            isMinifyEnabled = false
         }
     }
 
@@ -67,7 +63,7 @@ android {
         }
         create("prod") {
             dimension = "app"
-            signingConfig = signingConfigs.getByName("release")
+            // Do not assign signingConfig for prod to allow unsigned releases
         }
     }
 }
